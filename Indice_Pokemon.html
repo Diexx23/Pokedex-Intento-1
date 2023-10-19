@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="Diseño.css">
+</head>
+<body>
+    <header>
+        <h1>Pokédex</h1>
+        <div id="generations">
+            <!-- Agrega más botones para otras generaciones si es necesario -->
+        </div>
+        
+    </header>
+    <div id="pokedex">
+        <!-- Aquí se mostrará la lista de Pokémon con marcos personalizados y fondos -->
+    </div>
+    <script>
+        const pokedex = document.getElementById('pokedex');
+
+        // Función para cargar la lista de Pokémon
+        function cargarPokedex() {
+            for (let i = 1; i <= 1000; i++) { // Cargar los primeros 151 Pokémon (Generación 1)
+                fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const pokemonDiv = document.createElement('div');
+                        pokemonDiv.classList.add('pokemon-card');
+                        pokemonDiv.style.borderColor = getRandomColor(); // Genera un color aleatorio para el marco
+                        pokemonDiv.innerHTML = `
+                            <div class="pokemon-image-container">
+                                <img src="${data.sprites.front_default}" class="pokemon-image" alt="${data.name}" style="background-color: ${getRandomColor()};">
+                            </div>
+                            <div class="pokemon-description">
+                                <h3>${data.name}</h3>
+                                <p>Tipo(s): ${data.types.map(type => type.type.name).join(', ')}</p>
+                                <p>Altura: ${data.height / 10} m</p>
+                                <p>Peso: ${data.weight / 10} kg</p>
+                            </div>
+                        `;
+                        pokedex.appendChild(pokemonDiv);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
+        // Función para generar un color aleatorio en formato hexadecimal
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        cargarPokedex();
+        
+    </script>
+    <section id="final">
+        <hr>
+        <h1 id="Datos">davasquezs@academia.usbbog.edu.co</h1>
+        <br>
+    </section>
+    
+</body>
+</html>
